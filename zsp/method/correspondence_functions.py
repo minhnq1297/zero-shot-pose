@@ -185,7 +185,7 @@ def find_correspondences_original(descriptors1, descriptors2, attn1, attn2,
     if len(normalized) == 0:
         return [], []
 
-    kmeans = KMeans(n_clusters=n_clusters, random_state=0).fit(normalized)
+    kmeans = KMeans(n_clusters=n_clusters, n_init='auto', random_state=0).fit(normalized)
     bb_topk_sims = np.full((n_clusters), -np.inf)
     bb_indices_to_show = np.full((n_clusters), -np.inf)
 
@@ -332,7 +332,7 @@ def find_correspondences_batch_with_knn(descriptors1, descriptors2, attn1, attn2
         feats_b = F.normalize(feats_b, dim=-1).cpu().numpy()
         salience_b = saliency_map1[b][idxs_b]           # num_pairs_for_topk
 
-        kmeans = KMeans(n_clusters=num_pairs_to_return, random_state=0).fit(feats_b)
+        kmeans = KMeans(n_clusters=num_pairs_to_return, n_init='auto', random_state=0).fit(feats_b)
         kmeans_labels = torch.as_tensor(kmeans.labels_).to(device)
 
         final_idxs_chosen_from_image_1_b = []
